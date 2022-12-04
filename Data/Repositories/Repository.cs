@@ -15,7 +15,7 @@ namespace Data.Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
-
+        #region Add
         public void Add(T entity)
         {
             _dbSet.Add(entity);
@@ -25,7 +25,10 @@ namespace Data.Repositories
         {
             _dbSet.AddRange(entities);
         }
+        #endregion
 
+
+        #region Get
         public bool Any(Expression<Func<T, bool>> expression)
         {
             return _dbSet.Any(expression);
@@ -41,6 +44,13 @@ namespace Data.Repositories
             return _dbSet.Find(id);
         }
 
+        public IQueryable<T> Where(Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Where(expression);
+        }
+        #endregion
+
+        #region Delete
         public void Remove(T entity)
         {
             _dbSet.Remove(entity);
@@ -50,7 +60,9 @@ namespace Data.Repositories
         {
             _dbSet.RemoveRange(entities);
         }
+        #endregion
 
+        #region Update
         public void Update(T entity)
         {
             _dbSet.Update(entity);
@@ -60,10 +72,7 @@ namespace Data.Repositories
         {
             _dbSet.UpdateRange(entities);
         }
+        #endregion
 
-        public IQueryable<T> Where(Expression<Func<T, bool>> expression)
-        {
-           return _dbSet.Where(expression);
-        }
     }
 }

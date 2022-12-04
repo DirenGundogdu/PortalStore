@@ -20,5 +20,5 @@ public class ProductDto : BaseDto
 
     public int CategoryId { get; set; }
 
-    public CategoryDto CategoryDto { get; set; }
+    public CategoryDto? CategoryDto { get; set; }
 }

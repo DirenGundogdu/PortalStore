@@ -17,5 +17,5 @@ public class AddressDto : BaseDto
 
     public int CustomerId { get; set; }
 
-    public CustomerDto CustomerDto { get; set; }
+    public CustomerDto? CustomerDto { get; set; }
 }
