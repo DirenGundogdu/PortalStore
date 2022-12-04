@@ -16,4 +16,6 @@ public class Address : Base
 
     public Customer? Customer { get; set; }
 
+    public List<Order>? Orders { get; set; }
+
 }

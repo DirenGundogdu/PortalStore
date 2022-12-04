@@ -11,4 +11,6 @@ public class Order: Base
     public Address? Address { get; set; }
 
     public decimal TotalPrice { get; set; }
+
+    public List<OrderItem>? OrderItems { get; set; }
 }

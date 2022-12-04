@@ -5,19 +5,20 @@ namespace Core.IServices;
 public interface IService<T> where T : class
 {
     #region Get
-    Task<T> GetByIdAsync(int id);
+    T GetById(int id);
     IQueryable<T> GetAll();
     IQueryable<T> Where(Expression<Func<T, bool>> expression);
-    Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
+    bool Any(Expression<Func<T, bool>> expression);
     #endregion
 
     #region Add
-    Task AddAsync(T entity);
-    Task AddRangeAsync(IEnumerable<T> entities);
+    void Add(T entity);
+    void AddRange(IEnumerable<T> entities);
     #endregion
 
     #region Update
     void Update(T entity);
+    void UpdateRange(IEnumerable<T> entities);
     #endregion
 
     #region Delete
