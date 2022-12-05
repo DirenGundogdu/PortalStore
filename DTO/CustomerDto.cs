@@ -1,8 +1,6 @@
-﻿using Data.DTOs;
+﻿namespace DTO;
 
-namespace Core.DTOs;
-
-public abstract class CustomerDto : BaseDto
+public class CustomerDto : BaseDto
 {
     public string? FirstName { get; set; }
 

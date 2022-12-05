@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Business.Services;
-using Core.DTOs;
+using DTO;
 using Core.Entities;
 using Core.IServices;
 using Microsoft.AspNetCore.Mvc;
+using API.Constants;
+using API.Models;
+using System.Net;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class AddressController : ControllerBase
 {
@@ -20,27 +23,91 @@ public class AddressController : ControllerBase
         _mapper = mapper;
     }
 
+    //Get
     [HttpGet]
     public IActionResult GetAll()
     {
-        var result = _mapper.Map<List<AddressDto>>(_addressService.GetAll());
-        return Ok(result);
+        var data = _mapper.Map<List<AddressDto>>(_addressService.GetAll());
+        var result = new ResultModel<AddressDto>();
+        if (data.Count > 0)
+        {
+            result = new ResultModel<AddressDto>()
+            {
+                DataList = data,
+                Message = ConstantMessage.SuccessListMessage,
+                StatusCode = (int)HttpStatusCode.OK
+            };
+            return Ok(result);
+        }
+        else
+        {
+            result = new ResultModel<AddressDto>()
+            {
+                Message = ConstantMessage.NoRecordsFound,
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+            return Ok(result);
+        }
     }
 
 
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
-        var result = _mapper.Map<AddressDto>(_addressService.GetById(id));
-        return Ok(result);
+        var data = _mapper.Map<AddressDto>(_addressService.GetById(id));
+        var result = new ResultModel<AddressDto>();
+        if (data != null)
+        {
+            result = new ResultModel<AddressDto>()
+            {
+                Data = data,
+                Message = ConstantMessage.SuccessListMessage,
+                StatusCode = (int)HttpStatusCode.OK
+            };
+            return Ok(result);
+        }
+        else
+        {
+            result = new ResultModel<AddressDto>()
+            {
+                Message = ConstantMessage.NoRecordsFound,
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+            return Ok(result);
+        }
     }
 
+    //Create
     [HttpPost]
-    public IActionResult Create(AddressDto addressDto)
+    public IActionResult Create(AddressProcessDto addressProcessDto)
     {
-        var result = _mapper.Map<Address>(addressDto);
-        _addressService.Add(result);
-        return Ok(result);
+        var data = _mapper.Map<Address>(addressProcessDto);
+        _addressService.Add(data);
+
+        var result = new ResultModel<AddressProcessDto>();
+        if (data.Id > 0)
+        {
+            result = new ResultModel<AddressProcessDto>()
+            {
+
+                Message = ConstantMessage.SuccessListMessage,
+                StatusCode = (int)HttpStatusCode.Created
+            };
+            return Ok(result);
+        }
+        else
+        {
+            result = new ResultModel<AddressProcessDto>()
+            {
+                Message = ConstantMessage.NoRecordsFound,
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+            return Ok(result);
+        }
+
     }
+
+    //Update
+
 
 }

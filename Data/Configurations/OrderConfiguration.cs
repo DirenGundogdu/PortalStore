@@ -10,7 +10,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.TotalPrice).HasPrecision(16, 2);
-        builder.HasOne(x => x.Address).WithMany(x => x.Orders).HasForeignKey(x => x.AddressId);
-        builder.HasOne(x => x.Customer).WithMany(x => x.Orders).HasForeignKey(x =>x.CustomerId);
+        builder.HasOne(x => x.Address).WithMany(x => x.Orders).HasForeignKey(x => x.AddressId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(x => x.Customer).WithMany(x => x.Orders).HasForeignKey(x =>x.CustomerId).OnDelete(DeleteBehavior.NoAction);
     }
 }

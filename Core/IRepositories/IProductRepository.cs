@@ -4,4 +4,5 @@ namespace Core.IRepositories;
 
 public interface IProductRepository : IRepository<Product>
 {
+  
 }

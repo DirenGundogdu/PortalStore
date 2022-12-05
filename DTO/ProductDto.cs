@@ -1,12 +1,4 @@
-﻿using Core.Entities;
-using Data.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.DTOs;
+﻿namespace DTO;
 
 public class ProductDto : BaseDto
 {

@@ -13,6 +13,6 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
         builder.Property(x => x.Country).HasMaxLength(30);
         builder.Property(x => x.City).HasMaxLength(30);
         builder.Property(x => x.District).HasMaxLength(30);
-        builder.HasOne(x => x.Customer).WithMany(x => x.Addresses).HasForeignKey(x => x.CustomerId);
+        builder.HasOne(x => x.Customer).WithMany(x => x.Addresses).HasForeignKey(x => x.CustomerId).OnDelete(DeleteBehavior.NoAction);
     }
 }

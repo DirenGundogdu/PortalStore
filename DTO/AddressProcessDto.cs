@@ -1,10 +1,8 @@
-﻿using Core.Entities;
-using Data.DTOs;
+﻿namespace DTO;
 
-namespace Core.DTOs;
-
-public class AddressDto : BaseDto
+public class AddressProcessDto
 {
+    public int Id { get; set; }
     public string? AddressLine { get; set; }
 
     public string? Country { get; set; }
@@ -16,6 +14,4 @@ public class AddressDto : BaseDto
     public int ZipCode { get; set; }
 
     public int CustomerId { get; set; }
-
-    public CustomerDto? CustomerDto { get; set; }
 }

@@ -44,6 +44,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        function LoadPage() {
+            setTimeout(function () { window.location.reload() }, 2000);
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

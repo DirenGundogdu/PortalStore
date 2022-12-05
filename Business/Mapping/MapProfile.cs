@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Core.DTOs;
 using Core.Entities;
+using DTO;
 
 namespace Business.Mapping;
 
@@ -9,6 +9,7 @@ public class MapProfile : Profile
     public MapProfile() {
         
         CreateMap<Address,AddressDto>().ReverseMap();
+        CreateMap<Address,AddressProcessDto>().ReverseMap();
 
         CreateMap<Category,CategoryDto>().ReverseMap();
 
@@ -19,6 +20,8 @@ public class MapProfile : Profile
         CreateMap<Order,OrderDto>().ReverseMap();
 
         CreateMap<Product,ProductDto>().ReverseMap();
+        CreateMap<Product, ProductProcessDto>().ReverseMap();
+
 
     }
 }

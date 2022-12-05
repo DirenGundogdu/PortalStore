@@ -1,9 +1,6 @@
-﻿using Core.Entities;
-using Data.DTOs;
+﻿namespace DTO;
 
-namespace Core.DTOs;
-
-public abstract class OrderDto : BaseDto
+public class OrderDto : BaseDto
 {
     public int CustomerId { get; set; }
 

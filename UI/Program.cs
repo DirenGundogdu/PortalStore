@@ -1,7 +1,11 @@
+using UI.ApiHandler;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IApiHandler,ApiHandler>();
 
 var app = builder.Build();
 

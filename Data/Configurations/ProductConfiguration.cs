@@ -13,6 +13,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x => x.Description).HasMaxLength(250);
         builder.Property(x => x.OldPrice).HasPrecision(16, 2);
         builder.Property(x => x.Price).HasPrecision(16, 2);
-        builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId);
+        builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.NoAction);
     }
 }
