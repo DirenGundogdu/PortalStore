@@ -3,20 +3,22 @@
       data-ajax="true" data-ajax-method="POST"
       data-ajax-success="OnSuccess">
     <div class="form-group">
-        <label for="ProductName">Product Name</label>
-        <input type="text" class="form-control" name="Name" id="ProductName" aria-describedby="emailHelp" placeholder="Enter Name">
+        <label>Product Name</label>
+        <input type="text" class="form-control" name="Name" placeholder="Enter Name">
     </div>
     <div class="form-group">
-        <label for="ProductDescription">Description</label>
-        <input type="text" class="form-control" name="Description" id="ProductDescription" placeholder="Enter Description">
+        <label>Description</label>
+        <input type="text" class="form-control" name="Description" placeholder="Enter Description">
     </div>
     <input hidden name="OldPrice" value="0" />
     <div class="form-group">
-        <label for="ProductPrice">Price</label>
-        <input type="number" class="form-control" name="Price" id="ProductPrice" placeholder="Enter Price">
+        <label >Price</label>
+        <input type="number" class="form-control" name="Price" placeholder="Enter Price">
     </div>
-    <select class="form-select" aria-label="Default select example" name="CategoryId">
-        @if (Model.CategoryDtos.Count > 0)
+    <label>Category</label>
+    <select class="form-select"  name="CategoryId">
+
+        @if (Model.CategoryDtos != null)
         {
             foreach (var item in Model.CategoryDtos)
             {
@@ -24,11 +26,11 @@
             }
         }
     </select>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary my-3">Save</button>
 </form>
 <script>
     function OnSuccess() {
-        alert("İşlem Başarılı");
+        alert("Transaction Successful");
         LoadPage();
     }
 </script>

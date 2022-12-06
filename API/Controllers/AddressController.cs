@@ -24,10 +24,10 @@ public class AddressController : ControllerBase
     }
 
     //Get
-    [HttpGet]
-    public IActionResult GetAll()
+    [HttpGet("{customerId}")]
+    public IActionResult GetAll(int customerId)
     {
-        var data = _mapper.Map<List<AddressDto>>(_addressService.GetAll());
+        var data = _mapper.Map<List<AddressDto>>(_addressService.Where(x => x.Status == true && x.CustomerId == customerId));
         var result = new ResultModel<AddressDto>();
         if (data.Count > 0)
         {
@@ -108,14 +108,15 @@ public class AddressController : ControllerBase
     }
 
     //Update
-    [HttpPost("update")]
-    public IActionResult Update(AddressProcessDto addressProcessDto) 
+    [HttpPost]
+    public IActionResult Update(AddressProcessDto addressProcessDto)
     {
         var result = new ResultModel<AddressProcessDto>();
 
         if (addressProcessDto.Id > 0)
         {
             var address = _mapper.Map<Address>(addressProcessDto);
+            address.Status = true;
             _addressService.Update(address);
             result = new ResultModel<AddressProcessDto>()
             {
@@ -133,7 +134,7 @@ public class AddressController : ControllerBase
     }
 
     //Delete
-    [HttpPost("{id}")]
+    [HttpGet("{id}")]
     public IActionResult Remove(int id)
     {
         var data = _addressService.GetById(id);

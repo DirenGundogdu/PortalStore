@@ -20,14 +20,14 @@ namespace UI.Controllers
         {
             ProductVM product = new ProductVM();
             var productUrl = _config["BaseURL"] + UrlStrings.ProductListUrl;
-            var GetProduct=_apiHandler.GetApi<Resultmodel<ProductDto>>(productUrl);
-            if (GetProduct.DataList.Count > 0)
+            var GetProduct = _apiHandler.GetApi<Resultmodel<ProductDto>>(productUrl);
+            if (GetProduct.DataList != null)
             {
                 product.ProductList = GetProduct.DataList;
             }
             var categoryUrl = _config["BaseURL"] + UrlStrings.CategoryListUrl;
-            var GetCategory=_apiHandler.GetApi<Resultmodel<CategoryDto>>(categoryUrl);
-            if (GetCategory.DataList.Count > 0)
+            var GetCategory = _apiHandler.GetApi<Resultmodel<CategoryDto>>(categoryUrl);
+            if (GetCategory.DataList != null)
             {
                 product.CategoryDtos = GetCategory.DataList;
             }
@@ -40,13 +40,13 @@ namespace UI.Controllers
             ProductVM product = new ProductVM();
             var productUrl = _config["BaseURL"] + UrlStrings.ProductListUrl;
             var GetProduct = _apiHandler.GetApi<Resultmodel<ProductDto>>(productUrl);
-            if (GetProduct.DataList.Count > 0)
+            if (GetProduct.DataList != null)
             {
                 product.ProductList = GetProduct.DataList;
             }
             var categoryUrl = _config["BaseURL"] + UrlStrings.CategoryListUrl;
             var GetCategory = _apiHandler.GetApi<Resultmodel<CategoryDto>>(categoryUrl);
-            if (GetCategory.DataList.Count > 0)
+            if (GetCategory.DataList != null)
             {
                 product.CategoryDtos = GetCategory.DataList;
             }
@@ -86,11 +86,10 @@ namespace UI.Controllers
             var post = _apiHandler.PostApi<Resultmodel<ProductProcessDto>>(productProcess, productUrl);
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Remove(int id)
         {
             var productUrl = _config["BaseURL"] + UrlStrings.ProductRemoveUrl + "/" + id;
-            var post = _apiHandler.PostApi<Resultmodel<ProductProcessDto>>(productUrl);
+            var delete = _apiHandler.GetApi<Resultmodel<ProductProcessDto>>(productUrl);
             return RedirectToAction("Index");
         }
 

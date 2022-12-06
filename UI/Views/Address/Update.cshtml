@@ -1,0 +1,36 @@
+﻿@model DTO.AddressProcessDto
+
+<form asp-action="Update" asp-controller="Address"
+      data-ajax="true" data-ajax-method="POST"
+      data-ajax-success="OnSuccess">
+    <div class="form-group">
+        <label for="ProductName">Addresline</label>
+        <input type="text" class="form-control" name="AddressLine" id="ProductName" aria-describedby="emailHelp" value="@Model.AddressLine">
+    </div>
+    <div class="form-group">
+        <label for="ProductName">Country</label>
+        <input type="text" class="form-control" name="Country" id="ProductName" aria-describedby="emailHelp" value="@Model.Country">
+    </div>
+    <div class="form-group">
+        <label for="ProductDescription">City</label>
+        <input type="text" class="form-control" name="City" id="ProductDescription" value="@Model.City">
+    </div>
+    <div class="form-group">
+        <label for="ProductDescription">District</label>
+        <input type="text" class="form-control" name="District" id="ProductDescription" value="@Model.District">
+    </div>
+    <div class="form-group">
+        <label for="ProductDescription">ZipCode</label>
+        <input type="number" class="form-control" name="ZipCode" id="ProductDescription" value="@Model.ZipCode">
+    </div>
+    <input hidden name="Id" value="@Model.Id" />
+    <input hidden name="CustomerId" value="@Model.CustomerId" />
+
+    <button type="submit" class="btn my-3 btn-primary">Save</button>
+</form>
+<script>
+    function OnSuccess() {
+        alert("Transaction Successful");
+        LoadPage();
+    }
+</script>

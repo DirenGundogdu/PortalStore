@@ -22,10 +22,11 @@ namespace UI.Controllers
             return View(GetProduct.DataList);
         }
 
-        public IActionResult Create() {
-        
+        public IActionResult Create()
+        {
+
             return View();
-         }
+        }
 
         [HttpPost]
         public IActionResult Create(CustomerDto customerDto)
@@ -35,18 +36,32 @@ namespace UI.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Update() {
-            return View();
+        public IActionResult Update(int id)
+        {
+            var url = _config["BaseURL"] + UrlStrings.CustomerGetUrl + "/" + id;
+            var GetCustomer = _apiHandler.GetApi<Resultmodel<CustomerDto>>(url);
+            return View(GetCustomer.Data);
         }
         [HttpPost]
         public IActionResult Update(CustomerDto customerDto)
         {
+            var customerUrl = _config["BaseURL"] + UrlStrings.CustomerUpdateUrl;
+            var post = _apiHandler.PostApi<Resultmodel<CustomerDto>>(customerDto, customerUrl);
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public IActionResult Remove()
+
+        public IActionResult Remove(int id)
         {
+            var url = _config["BaseURL"] + UrlStrings.CustomerRemoveUrl + "/" + id;
+            var delete = _apiHandler.GetApi<Resultmodel<CustomerDto>>(url);
             return RedirectToAction("Index");
+        }
+        public async Task<JsonResult> TCValidate(long tc, string name, string surname, DateTime BirthDate)
+        {
+            var client = new TCService.KPSPublicSoapClient(TCService.KPSPublicSoapClient.EndpointConfiguration.KPSPublicSoap);
+            var response = await client.TCKimlikNoDogrulaAsync(Convert.ToInt64(tc), name, surname, BirthDate.Year);
+            var result = response.Body.TCKimlikNoDogrulaResult;
+            return Json(result);
         }
     }
 }

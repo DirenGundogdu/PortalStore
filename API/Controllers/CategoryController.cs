@@ -27,7 +27,7 @@ public class CategoryController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        var data = _mapper.Map<List<CategoryDto>>(_categoryService.GetAll());
+        var data = _mapper.Map<List<CategoryDto>>(_categoryService.Where(x => x.Status == true));
 
         var result = new ResultModel<CategoryDto>();
         if (data.Count > 0)
@@ -52,7 +52,8 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id) {
+    public IActionResult GetById(int id)
+    {
         var data = _mapper.Map<CategoryDto>(_categoryService.GetById(id));
 
         var result = new ResultModel<CategoryDto>();
@@ -107,7 +108,7 @@ public class CategoryController : ControllerBase
     }
 
     //Update
-    [HttpPost("update")]
+    [HttpPost]
     public IActionResult Update(CategoryDto categoryDto)
     {
         var result = new ResultModel<CategoryDto>();
@@ -132,7 +133,7 @@ public class CategoryController : ControllerBase
     }
 
     //Delete
-    [HttpPost("{id}")]
+    [HttpGet("{id}")]
     public IActionResult Remove(int id)
     {
         var data = _categoryService.GetById(id);

@@ -16,6 +16,8 @@ public class AppDbContext : DbContext
     public DbSet<OrderItem>? OrderItems { get; set; }
     public DbSet<Product>? Products { get; set; }
 
+    public DbSet<Basket>? Baskets { get; set; } 
+
     public override int SaveChanges()
     {
         foreach (var item in ChangeTracker.Entries())

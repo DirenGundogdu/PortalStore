@@ -15,6 +15,7 @@ public class Product : Base
     public Category? Category { get; set; }
 
     public List<OrderItem>? OrderItems { get; set; }
+    public List<Basket> Baskets { get; set; }
 
 
 }

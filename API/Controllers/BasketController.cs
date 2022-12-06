@@ -13,26 +13,27 @@ namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class BasketController : ControllerBase
     {
-        private readonly ICustomerService _customerService;
+        private readonly IBasketService _basketService;
         private readonly IMapper _mapper;
 
-        public CustomerController(ICustomerService customerService, IMapper mapper)
+        public BasketController(IMapper mapper, IBasketService basketService)
         {
-            _customerService = customerService;
             _mapper = mapper;
+            _basketService = basketService;
         }
 
         //Get
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("{customerId}")]
+        public IActionResult GetAll(int customerId)
         {
-            var data = _mapper.Map<List<CustomerDto>>(_customerService.Where(x => x.Status == true));
-            var result = new ResultModel<CustomerDto>();
+            var data = _mapper.Map<List<BasketDto>>(_basketService.GetCustomerBasket(customerId));
+
+            var result = new ResultModel<BasketDto>();
             if (data.Count > 0)
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketDto>()
                 {
                     DataList = data,
                     Message = ConstantMessage.SuccessListMessage,
@@ -42,7 +43,7 @@ namespace API.Controllers
             }
             else
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketDto>()
                 {
                     Message = ConstantMessage.NoRecordsFound,
                     StatusCode = (int)HttpStatusCode.BadRequest
@@ -54,12 +55,12 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var data = _mapper.Map<CustomerDto>(_customerService.GetById(id));
+            var data = _mapper.Map<BasketDto>(_basketService.GetById(id));
 
-            var result = new ResultModel<CustomerDto>();
+            var result = new ResultModel<BasketDto>();
             if (data != null)
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketDto>()
                 {
                     Data = data,
                     Message = ConstantMessage.SuccessListMessage,
@@ -69,7 +70,7 @@ namespace API.Controllers
             }
             else
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketDto>()
                 {
                     Message = ConstantMessage.NoRecordsFound,
                     StatusCode = (int)HttpStatusCode.BadRequest
@@ -78,18 +79,17 @@ namespace API.Controllers
             }
         }
 
-
         //Create
         [HttpPost]
-        public IActionResult Create(CustomerDto customerDto)
+        public IActionResult Create(BasketProcessDto basketDto)
         {
-            var data = _mapper.Map<Customer>(customerDto);
-            _customerService.Add(data);
+            var data = _mapper.Map<Basket>(basketDto);
+            _basketService.Add(data);
 
-            var result = new ResultModel<CustomerDto>();
+            var result = new ResultModel<BasketProcessDto>();
             if (data.Id > 0)
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketProcessDto>()
                 {
 
                     Message = ConstantMessage.SuccessListMessage,
@@ -99,7 +99,7 @@ namespace API.Controllers
             }
             else
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketProcessDto>()
                 {
                     Message = ConstantMessage.NoRecordsFound,
                     StatusCode = (int)HttpStatusCode.BadRequest
@@ -110,22 +110,22 @@ namespace API.Controllers
 
         //Update
         [HttpPost]
-        public IActionResult Update(CustomerDto customerDto)
+        public IActionResult Update(BasketProcessDto BasketDto)
         {
-            var result = new ResultModel<CustomerDto>();
-            if (customerDto.Id > 0)
-            {
-                var customer = _mapper.Map<Customer>(customerDto);
-                _customerService.Update(customer);
-                result = new ResultModel<CustomerDto>()
-                {
+            var result = new ResultModel<BasketProcessDto>();
 
+            if (BasketDto.Id > 0)
+            {
+                var address = _mapper.Map<Basket>(BasketDto);
+                _basketService.Update(address);
+                result = new ResultModel<BasketProcessDto>()
+                {
                     Message = ConstantMessage.SuccessListMessage,
                     StatusCode = (int)HttpStatusCode.OK
                 };
                 return Ok(result);
             }
-            result = new ResultModel<CustomerDto>()
+            result = new ResultModel<BasketProcessDto>()
             {
                 Message = ConstantMessage.NoRecordsFound,
                 StatusCode = (int)HttpStatusCode.BadRequest
@@ -137,16 +137,17 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public IActionResult Remove(int id)
         {
-            var data = _customerService.GetById(id);
+            var data = _basketService.GetById(id);
             if (data != null)
             {
                 data.Status = false;
-                _customerService.Update(data);
+                _basketService.Update(data);
             }
-            var result = new ResultModel<CustomerDto>();
+
+            var result = new ResultModel<BasketProcessDto>();
             if (data.Id > 0)
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketProcessDto>()
                 {
 
                     Message = ConstantMessage.SuccessListMessage,
@@ -156,7 +157,7 @@ namespace API.Controllers
             }
             else
             {
-                result = new ResultModel<CustomerDto>()
+                result = new ResultModel<BasketProcessDto>()
                 {
                     Message = ConstantMessage.NoRecordsFound,
                     StatusCode = (int)HttpStatusCode.BadRequest
@@ -164,5 +165,7 @@ namespace API.Controllers
                 return Ok(result);
             }
         }
+
+
     }
 }

@@ -1,2 +1,37 @@
 ﻿@model DTO.CustomerDto
 
+<form asp-action="Update" asp-controller="Customer"
+      data-ajax="true" data-ajax-method="POST"
+      data-ajax-success="OnSuccess">
+    <div class="form-group">
+        <label for="">Name</label>
+        <input type="text" class="form-control" name="FirstName" id=""  value="@Model.FirstName">
+    </div>
+    <div class="form-group">
+        <label for="ProducName">Surname</label>
+        <input type="text" class="form-control" name="LastName" id="" value="@Model.LastName">
+    </div>
+    <div class="form-group">
+        <label for="">Email</label>
+        <input type="email" class="form-control" name="Email" id="" value="@Model.Email">
+    </div>
+    <div class="form-group">
+        <label for="">TC</label>
+        <input type="number" class="form-control" name="TCID" id="" value="@Model.TCID">
+    </div>
+    <div class="form-group">
+        <label for="">Birthdate</label>
+        <input type="date" class="form-control" name="Birthdate" id="" value="@Model.Birthdate.ToString("dd-MM-yyyy")">
+    </div>
+    <input hidden name="OldPrice" value="0" />
+    <div class="form-group">
+        <label for="ProductPrice">Gsm</label>
+        <input type="tel" class="form-control" name="Gsm" id="ProductPrice" value="@Model.Gsm">
+    </div>
+    <input type="number" name="Id" value="@Model.Id" hidden />
+    <button type="submit" class="btn my-3 btn-primary">Save</button>
+</form>
+<script>function OnSuccess() {
+    alert("Transaction Successful");
+        LoadPage();
+    }</script>

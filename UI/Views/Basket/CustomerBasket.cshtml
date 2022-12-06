@@ -1,0 +1,59 @@
+﻿@model BasketVM
+@{
+    decimal totalPrice = 0;
+}
+
+<div class="container">
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Ürün Adı</th>
+                <th scope="col">Ürün Adedi</th>
+                <th scope="col">Toplam Fiyat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.basketDtos != null)
+            {
+                foreach (var item in Model.basketDtos)
+                {
+                    <tr>
+                        <th scope="row">@item.Product.Name</th>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Quantity * @item.Product.Price)</td>
+                    </tr>
+                    @(totalPrice+= item.Quantity * @item.Product.Price)
+                }
+            }
+
+        </tbody>
+    </table>
+    <form asp-action="CreateOrder" asp-controller="Basket"
+          data-ajax="true" data-ajax-method="POST"
+          data-ajax-success="OnSuccess">
+        <div class="row">
+            <div class="col-md-10 d-flex align-items-center justify-content-center">
+                <select class="form-select" aria-label="Default select example" name="addressId">
+                    @if (Model.addressDtos != null)
+                    {
+                        foreach (var item in Model.addressDtos)
+                        {
+                            <option value="@item.Id">@item.AddressLine</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                <input hidden name="customerId" value="@Model.addressDtos.FirstOrDefault().CustomerId" />
+                <input hidden name="totalPrice" value="@totalPrice" />
+                <button type="submit" class="btn my-3 btn-outline-success">Create Order</button>
+
+            </div>
+        </div>
+       
+       
+    </form>
+
+</div>

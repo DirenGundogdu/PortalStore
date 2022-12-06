@@ -10,7 +10,7 @@ using System.Net;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class OrderItemController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var data = _mapper.Map<List<OrderItemDto>>(_orderItemService.GetAll());
+            var data = _mapper.Map<List<OrderItemDto>>(_orderItemService.Where(x => x.Status == true));
 
             var result = new ResultModel<OrderItemDto>();
             if (data.Count > 0)
@@ -108,7 +108,7 @@ namespace API.Controllers
         }
 
         //Update
-        [HttpPost("update")]
+        [HttpPost]
         public IActionResult Update(OrderItemDto orderItemDto)
         {
             var result = new ResultModel<OrderItemDto>();
@@ -133,7 +133,7 @@ namespace API.Controllers
         }
 
         //Delete
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public IActionResult Remove(int id)
         {
             var data = _orderItemService.GetById(id);

@@ -22,6 +22,10 @@ public class MapProfile : Profile
         CreateMap<Product,ProductDto>().ReverseMap();
         CreateMap<Product, ProductProcessDto>().ReverseMap();
 
+        CreateMap<Basket, BasketDto>().ReverseMap();
+        CreateMap<Basket, BasketProcessDto>().ReverseMap();
+
+
 
     }
 }

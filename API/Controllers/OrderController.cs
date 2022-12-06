@@ -16,18 +16,23 @@ namespace API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IBasketService _basketService;
+        private readonly IOrderItemService _orderItemService;
         private readonly IMapper _mapper;
 
-        public OrderController(IMapper mapper, IOrderService orderService)
+        public OrderController(IMapper mapper, IOrderService orderService, IOrderItemService orderItemService, IBasketService basketService)
         {
             _mapper = mapper;
             _orderService = orderService;
+            _orderItemService = orderItemService;
+            _basketService = basketService;
         }
 
         //Get
         [HttpGet]
-        public IActionResult GetAll() {
-        var data = _mapper.Map<List<OrderDto>>(_orderService.GetAll());
+        public IActionResult GetAll()
+        {
+            var data = _mapper.Map<List<OrderDto>>(_orderService.Where(x => x.Status == true));
 
             var result = new ResultModel<OrderDto>();
             if (data.Count > 0)
@@ -53,7 +58,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id) {
+        public IActionResult GetById(int id)
+        {
             var data = _mapper.Map<OrderDto>(_orderService.GetById(id));
             var result = new ResultModel<OrderDto>();
             if (data != null)
@@ -85,7 +91,7 @@ namespace API.Controllers
             _orderService.Add(data);
 
             var result = new ResultModel<OrderDto>();
-                if (data.Id > 0)
+            if (data.Id > 0)
             {
                 result = new ResultModel<OrderDto>()
                 {
@@ -107,7 +113,7 @@ namespace API.Controllers
         }
 
         //Update
-        [HttpPost("update")]
+        [HttpPost]
         public IActionResult Update(OrderDto orderDto)
         {
             var result = new ResultModel<OrderDto>();
@@ -132,7 +138,7 @@ namespace API.Controllers
         }
 
         //Delete
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public IActionResult Remove(int id)
         {
             var data = _orderService.GetById(id);
@@ -164,5 +170,34 @@ namespace API.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult CreateOrder(BasketProcessDto basketProcess)
+        {
+            var getCustomerBasket = _basketService.GetCustomerBasket(basketProcess.CustomerId);
+
+            Order order = new Order()
+            {
+                AddressId = basketProcess.AddressId,
+                TotalPrice = basketProcess.TotalPrice,
+                CustomerId = basketProcess.CustomerId,
+            };
+            _orderService.Add(order);
+            if (order.Id > 0)
+            {
+                foreach (var item in getCustomerBasket)
+                {
+                    OrderItem orderItem = new OrderItem()
+                    {
+                        OrderId = order.Id,
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.Product.Price,
+                    };
+                    _orderItemService.Add(orderItem);
+                }
+                _basketService.RemoveRange(getCustomerBasket);
+            }
+            return Ok();
+        }
     }
 }

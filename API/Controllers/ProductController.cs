@@ -27,7 +27,7 @@ public class ProductController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        var data = _mapper.Map<List<ProductDto>>(_productService.GetAll());
+        var data = _mapper.Map<List<ProductDto>>(_productService.Where(x => x.Status == true));
 
         var result = new ResultModel<ProductDto>();
         if (data.Count > 0)
@@ -112,7 +112,7 @@ public class ProductController : ControllerBase
     }
 
     //Update
-    [HttpPost("update")]
+    [HttpPost]
     public IActionResult Update(ProductProcessDto productProcessDto)
     {
         var product = _productService.GetById(productProcessDto.Id);
@@ -126,7 +126,7 @@ public class ProductController : ControllerBase
             product.Description = productProcessDto.Description;
             product.Name = productProcessDto.Name;
             _productService.Update(product);
-           
+
         }
 
         var result = new ResultModel<ProductProcessDto>();
@@ -155,7 +155,7 @@ public class ProductController : ControllerBase
     }
 
     //Delete
-    [HttpPost("{id}")]
+    [HttpGet("{id}")]
     public IActionResult Remove(int id)
     {
         var data = _productService.GetById(id);

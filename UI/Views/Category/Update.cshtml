@@ -1,0 +1,20 @@
+﻿@model DTO.CategoryDto
+
+<form asp-action="Update" asp-controller="Category"
+      data-ajax="true" data-ajax-method="POST"
+      data-ajax-success="OnSuccess">
+    <div class="form-group">
+        <label for="">Category Name</label>
+        <input type="text" class="form-control" name="Name"  value="@Model.Name">
+    </div>
+    <input hidden name="Id" value="@Model.Id" />
+
+    <button type="submit" class="btn my-3 btn-primary">Save</button>
+</form>
+<script>
+    function OnSuccess() {
+        alert("Transaction Successful");
+        //LoadPage();
+        window.location.href = "/Category/Index";
+    }
+</script>

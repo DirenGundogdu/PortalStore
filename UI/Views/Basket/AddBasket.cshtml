@@ -1,0 +1,30 @@
+﻿@model Resultmodel<DTO.CustomerDto>
+
+<form asp-action="AddBasket" asp-controller="Basket"
+      data-ajax="true" data-ajax-method="POST"
+      data-ajax-success="OnSuccess">
+
+    <input hidden name="ProductId" value="@ViewBag.ProductId" />
+    <div class="form-group">
+        <label for="">Quantity</label>
+        <input type="number" class="form-control" name="Quantity" id="" placeholder="Enter Quantity">
+    </div>
+    <label for="">Customer</label>
+
+    <select class="form-select" aria-label="Default select example" name="CustomerId">
+
+        @if (Model.DataList != null)
+        {
+            foreach (var item in Model.DataList)
+            {
+                <option value="@item.Id">@item.FirstName @item.LastName</option>
+            }
+        }
+    </select>
+    <button type="submit" class="btn my-3 btn-primary">Save</button>
+
+</form>
+<script>function OnSuccess() {
+    alert("Transaction Successful");
+        LoadPage();
+    }</script>

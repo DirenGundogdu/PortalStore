@@ -57,5 +57,10 @@
         public static string OrderUpdateUrl = "Order/Update";
 
         public static string OrderRemoveUrl = "Order/Remove";
+        public static string CreateOrder = "Order/CreateOrder";
+
+        //Basket
+        public static string BasketListByCustomer = "Basket/GetAll";
+        public static string AddToBasket = "Basket/Create";
     }
 }
