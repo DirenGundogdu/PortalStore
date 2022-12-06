@@ -108,6 +108,61 @@ public class AddressController : ControllerBase
     }
 
     //Update
+    [HttpPost("update")]
+    public IActionResult Update(AddressProcessDto addressProcessDto) 
+    {
+        var result = new ResultModel<AddressProcessDto>();
 
+        if (addressProcessDto.Id > 0)
+        {
+            var address = _mapper.Map<Address>(addressProcessDto);
+            _addressService.Update(address);
+            result = new ResultModel<AddressProcessDto>()
+            {
+                Message = ConstantMessage.SuccessListMessage,
+                StatusCode = (int)HttpStatusCode.OK
+            };
+            return Ok(result);
+        }
+        result = new ResultModel<AddressProcessDto>()
+        {
+            Message = ConstantMessage.NoRecordsFound,
+            StatusCode = (int)HttpStatusCode.BadRequest
+        };
+        return Ok(result);
+    }
+
+    //Delete
+    [HttpPost("{id}")]
+    public IActionResult Remove(int id)
+    {
+        var data = _addressService.GetById(id);
+        if (data != null)
+        {
+            data.Status = false;
+            _addressService.Update(data);
+        }
+        var result = new ResultModel<AddressProcessDto>();
+        if (data.Id > 0)
+        {
+            result = new ResultModel<AddressProcessDto>()
+            {
+
+                Message = ConstantMessage.SuccessListMessage,
+                StatusCode = (int)HttpStatusCode.OK
+            };
+            return Ok(result);
+        }
+        else
+        {
+            result = new ResultModel<AddressProcessDto>()
+            {
+                Message = ConstantMessage.NoRecordsFound,
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+            return Ok(result);
+        }
+
+    }
 
 }

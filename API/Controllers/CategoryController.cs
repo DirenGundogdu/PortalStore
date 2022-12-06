@@ -110,29 +110,25 @@ public class CategoryController : ControllerBase
     [HttpPost("update")]
     public IActionResult Update(CategoryDto categoryDto)
     {
-        var category = _categoryService.GetById(categoryDto.Id);
-        _categoryService.Update(category);
-
         var result = new ResultModel<CategoryDto>();
-        if (category.Id > 0)
+
+        if (categoryDto.Id > 0)
         {
+            var address = _mapper.Map<Category>(categoryDto);
+            _categoryService.Update(address);
             result = new ResultModel<CategoryDto>()
             {
-
                 Message = ConstantMessage.SuccessListMessage,
                 StatusCode = (int)HttpStatusCode.OK
             };
             return Ok(result);
         }
-        else
+        result = new ResultModel<CategoryDto>()
         {
-            result = new ResultModel<CategoryDto>()
-            {
-                Message = ConstantMessage.NoRecordsFound,
-                StatusCode = (int)HttpStatusCode.BadRequest
-            };
-            return Ok(result);
-        }
+            Message = ConstantMessage.NoRecordsFound,
+            StatusCode = (int)HttpStatusCode.BadRequest
+        };
+        return Ok(result);
     }
 
     //Delete

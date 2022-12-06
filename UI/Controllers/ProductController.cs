@@ -25,7 +25,7 @@ namespace UI.Controllers
             {
                 product.ProductList = GetProduct.DataList;
             }
-            var categoryUrl = _config["BaseURL"] + UrlStrings.CategoryList;
+            var categoryUrl = _config["BaseURL"] + UrlStrings.CategoryListUrl;
             var GetCategory=_apiHandler.GetApi<Resultmodel<CategoryDto>>(categoryUrl);
             if (GetCategory.DataList.Count > 0)
             {
@@ -37,7 +37,21 @@ namespace UI.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            ProductVM product = new ProductVM();
+            var productUrl = _config["BaseURL"] + UrlStrings.ProductListUrl;
+            var GetProduct = _apiHandler.GetApi<Resultmodel<ProductDto>>(productUrl);
+            if (GetProduct.DataList.Count > 0)
+            {
+                product.ProductList = GetProduct.DataList;
+            }
+            var categoryUrl = _config["BaseURL"] + UrlStrings.CategoryListUrl;
+            var GetCategory = _apiHandler.GetApi<Resultmodel<CategoryDto>>(categoryUrl);
+            if (GetCategory.DataList.Count > 0)
+            {
+                product.CategoryDtos = GetCategory.DataList;
+            }
+
+            return View(product);
         }
         [HttpPost]
         public IActionResult Create(ProductProcessDto productProcess)
@@ -49,13 +63,35 @@ namespace UI.Controllers
 
         public IActionResult Update(int id)
         {
+            ProductVM product = new ProductVM();
+            var productUrl = _config["BaseURL"] + UrlStrings.ProductGetUrl + "/" + id;
+            var GetProduct = _apiHandler.GetApi<Resultmodel<ProductProcessDto>>(productUrl);
+            if (GetProduct.Data != null)
+            {
+                product.Product = GetProduct.Data;
+            }
+            var categoryUrl = _config["BaseURL"] + UrlStrings.CategoryListUrl;
+            var GetCategory = _apiHandler.GetApi<Resultmodel<CategoryDto>>(categoryUrl);
+            if (GetCategory.DataList != null)
+            {
+                product.CategoryDtos = GetCategory.DataList;
+            }
 
-            return View();
+            return View(product);
         }
         [HttpPost]
-        public IActionResult Delete()
+        public IActionResult Update(ProductProcessDto productProcess)
         {
-            return View();
+            var productUrl = _config["BaseURL"] + UrlStrings.ProductUpdateUrl;
+            var post = _apiHandler.PostApi<Resultmodel<ProductProcessDto>>(productProcess, productUrl);
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var productUrl = _config["BaseURL"] + UrlStrings.ProductRemoveUrl + "/" + id;
+            var post = _apiHandler.PostApi<Resultmodel<ProductProcessDto>>(productUrl);
+            return RedirectToAction("Index");
         }
 
     }

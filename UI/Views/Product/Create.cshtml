@@ -1,0 +1,34 @@
+﻿@model ProductVM
+<form asp-action="Create" asp-controller="Product"
+      data-ajax="true" data-ajax-method="POST"
+      data-ajax-success="OnSuccess">
+    <div class="form-group">
+        <label for="ProductName">Product Name</label>
+        <input type="text" class="form-control" name="Name" id="ProductName" aria-describedby="emailHelp" placeholder="Enter Name">
+    </div>
+    <div class="form-group">
+        <label for="ProductDescription">Description</label>
+        <input type="text" class="form-control" name="Description" id="ProductDescription" placeholder="Enter Description">
+    </div>
+    <input hidden name="OldPrice" value="0" />
+    <div class="form-group">
+        <label for="ProductPrice">Price</label>
+        <input type="number" class="form-control" name="Price" id="ProductPrice" placeholder="Enter Price">
+    </div>
+    <select class="form-select" aria-label="Default select example" name="CategoryId">
+        @if (Model.CategoryDtos.Count > 0)
+        {
+            foreach (var item in Model.CategoryDtos)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        }
+    </select>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<script>
+    function OnSuccess() {
+        alert("İşlem Başarılı");
+        LoadPage();
+    }
+</script>

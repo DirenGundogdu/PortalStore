@@ -1,38 +1,32 @@
 ﻿@model ProductVM
-<form asp-action="Create" asp-controller="Product"
-      data-ajax="true" data-ajax-method="POST"
-      data-ajax-success="OnSuccess">
-    <div class="form-group">
-        <label for="exampleInputEmail1">Product Name</label>
-        <input type="text" class="form-control" name="Name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Description</label>
-        <input type="text" class="form-control" name="Description" id="exampleInputPassword1" placeholder="Description">
-    </div>
-    <input hidden name="OldPrice" value="0" />
-    <div class="form-group">
-        <label for="exampleInputPassword1">Price</label>
-        <input type="number" class="form-control" name="Price" id="exampleInputPassword1" placeholder="Price">
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Price</label>
-        <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Price">
-    </div>
-    <select class="form-select" aria-label="Default select example" name="CategoryId">
-        @if (Model.CategoryDtos.Count > 0)
-        {
-            foreach (var item in Model.CategoryDtos)
+
+<div class="container">
+    <a type="button" class="btn btn-outline-success" asp-controller="Product" asp-action="Create">Create</a>
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ProductId</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">OldPrice</th>
+                <th scope="col">Price</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ProductList)
             {
-                <option value="@item.Id">@item.Name</option>
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.OldPrice</td>
+                    <td>@item.Price</td>
+                    <td><a type="button" class="btn btn-outline-warning" asp-controller="Product" asp-action="Update" asp-route-id="@item.Id">Update</a></td>
+                    <td><button type="button" class="btn-close btn-close-white" asp-controller="Product" asp-action="Remove" asp-route-id="@item.Id"></button></td>
+                </tr>
             }
-        }
-    </select>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
-<script>
-    function OnSuccess() {
-        alert("İşlem Başarılı");
-        LoadPage();
-    }
-</script>
+        </tbody>
+    </table>
+</div>
